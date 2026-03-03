@@ -37,7 +37,7 @@ docker compose up
 
 ```yaml
 volumes:
-  - dev-tools:/tools
+  - dev-tools:/tools:ro
 environment:
   - PATH=/tools/shims:${PATH}
 
