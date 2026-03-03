@@ -1,52 +1,54 @@
 # dev-tools
 
-Populates a shared `dev-tools` Docker volume with dev tools using [mise](https://mise.jdx.dev/). Run once, mount everywhere.
-
-## Prerequisites
-
-Create the external volume:
-
-```bash
-docker volume create dev-tools
-```
-
-Optionally, set a GitHub token to avoid API rate limits:
-
-```bash
-cp .env.example .env
-# fill in GITHUB_TOKEN
-```
-
-## Usage
-
-```bash
-docker compose up
-```
+Curated set of dev tools managed by [mise](https://mise.jdx.dev/). Use as a submodule to share a consistent toolset across projects.
 
 ## Tools
 
-| Category         | Tools                                              |
-| ---------------- | -------------------------------------------------- |
-| Languages        | Node 24, Python 3.11, Go 1.26, DuckDB 1            |
-| Package managers | uv                                                 |
-| Secrets          | sops, age                                          |
-| Infra            | mc (MinIO client), Supabase CLI                    |
-| Dev utilities    | bat, eza, ripgrep, fzf, jq, yq, just, gh, starship |
+| Category         | Tools                                               |
+| ---------------- | --------------------------------------------------- |
+| Languages        | Node 24, Python 3.11, Go 1.26, DuckDB 1             |
+| Package managers | uv                                                  |
+| Secrets          | sops, age                                           |
+| Infra            | mc (MinIO client), Supabase CLI                     |
+| Dev utilities    | bat, eza, ripgrep, fzf, jq, yq, just, gh, starship  |
 
-## Consuming the volume
+## Usage as a submodule
 
-```yaml
-volumes:
-  - dev-tools:/tools:ro
-environment:
-  - PATH=/tools/shims:${PATH}
+Add to your project:
 
-volumes:
-  dev-tools:
-    name: dev-tools
-    external: true
+```bash
+git submodule add <repo-url> dev-tools
+```
+
+In your `Dockerfile`, install the tools:
+
+```dockerfile
+COPY dev-tools/mise.toml /tmp/mise.toml
+
+RUN curl https://mise.run | sh \
+    && mise install --config /tmp/mise.toml
+```
+
+Add the shims to `PATH`:
+
+```dockerfile
+ENV PATH="/tools/shims:${PATH}"
 ```
 
 ## Updating tools
 
-Edit `mise.toml`, bump versions, re-run `docker compose up`.
+Edit `mise.toml`, bump versions, commit, then update the submodule reference in consuming projects:
+
+```bash
+git submodule update --remote dev-tools
+```
+
+## Standalone usage
+
+To populate a Docker volume directly:
+
+```bash
+cp .env.example .env  # optional, fill in GITHUB_TOKEN
+docker volume create dev-tools
+docker compose up
+```
