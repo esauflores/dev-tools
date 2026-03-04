@@ -15,4 +15,3 @@ services:
 volumes:
   dev-tools:
     name: dev-tools
-
