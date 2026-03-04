@@ -4,13 +4,13 @@ Curated set of dev tools managed by [mise](https://mise.jdx.dev/). Use as a subm
 
 ## Tools
 
-| Category         | Tools                                               |
-| ---------------- | --------------------------------------------------- |
-| Languages        | Node 24, Python 3.11, Go 1.26, DuckDB 1             |
-| Package managers | uv                                                  |
-| Secrets          | sops, age                                           |
-| Infra            | mc (MinIO client), Supabase CLI                     |
-| Dev utilities    | bat, eza, ripgrep, fzf, jq, yq, just, gh, starship  |
+| Category         | Tools                                              |
+| ---------------- | -------------------------------------------------- |
+| Languages        | Node 24, Python 3.11, Go 1.26, DuckDB 1            |
+| Package managers | uv                                                 |
+| Secrets          | sops, age                                          |
+| Infra            | mc (MinIO client), Supabase CLI                    |
+| Dev utilities    | bat, eza, ripgrep, fzf, jq, yq, just, gh, starship |
 
 ## Usage as a submodule
 
