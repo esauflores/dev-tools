@@ -1,0 +1,35 @@
+name: Build and Push
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+
+    env:
+      IMAGE: ${{ secrets.REGISTRY_URL }}/dev-tools
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Login to registry
+        run: |
+          echo "${{ secrets.REGISTRY_PASSWORD }}" | docker login \
+            ${{ secrets.REGISTRY_URL }} \
+            -u ${{ secrets.REGISTRY_USERNAME }} \
+            --password-stdin
+
+      - name: Build image
+        run: docker build -t $IMAGE:${{ github.ref_name }} .
+
+      - name: Push image
+        run: docker push $IMAGE:${{ github.ref_name }}
+
+      - name: Tag & push latest for release tags
+        if: startsWith(github.ref_name, 'v')
+        run: |
+          docker tag $IMAGE:${{ github.ref_name }} $IMAGE:latest
+          docker push $IMAGE:latest
