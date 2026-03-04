@@ -1,6 +1,6 @@
 # dev-tools
 
-Curated set of dev tools managed by [mise](https://mise.jdx.dev/). Use as a submodule to share a consistent toolset across projects.
+Curated set of dev tools managed by [mise](https://mise.jdx.dev/). Docker-based development environment with tools persisted on a shared volume.
 
 ## Tools
 
@@ -12,43 +12,51 @@ Curated set of dev tools managed by [mise](https://mise.jdx.dev/). Use as a subm
 | Infra            | mc (MinIO client), Supabase CLI                    |
 | Dev utilities    | bat, eza, ripgrep, fzf, jq, yq, just, gh, starship |
 
-## Usage as a submodule
+## Quick Start
 
-Add to your project:
+Clone and run the dev-tools container:
 
 ```bash
-git submodule add <repo-url> dev-tools
+git clone https://github.com/esauflores/dev-tools
+cd dev-tools
+cp .env.example .env  # optional, fill in GITHUB_TOKEN
+docker compose up
 ```
 
-In your `Dockerfile`, install the tools:
+This will:
 
-```dockerfile
-COPY dev-tools/mise.toml /tmp/mise.toml
+- Create a `dev-tools` Docker volume to persist tool data and configurations
+- Start the container with the volume mounted at `/tools`
+- Install all tools via mise on first run
 
-RUN curl https://mise.run | sh \
-    && mise install --config /tmp/mise.toml
+**Optional (Important):** Set `GITHUB_TOKEN` in `.env` to increase GitHub API rate limits for mise.
+
+## Using the Volume in Other Containers
+
+The `dev-tools` container populates the volume with all tools. Use that volume in your other containers:
+
+```yaml
+services:
+  app:
+    volumes:
+      - dev-tools:/tools:ro
 ```
 
-Add the shims to `PATH`:
+Add `/tools/shims` to `PATH` in your container's Dockerfile:
 
 ```dockerfile
 ENV PATH="/tools/shims:${PATH}"
 ```
 
-## Updating tools
+All dev-tools are now available in your container.
 
-Edit `mise.toml`, bump versions, commit, then update the submodule reference in consuming projects:
+## Updating Tools
 
-```bash
-git submodule update --remote dev-tools
-```
-
-## Standalone usage
-
-To populate a Docker volume directly:
+Edit `mise.toml`, update versions as needed, then rebuild:
 
 ```bash
-cp .env.example .env  # optional, fill in GITHUB_TOKEN
-docker volume create dev-tools
+docker compose build --no-cache
 docker compose up
 ```
+
+The `dev-tools` volume persists tool data between runs.
