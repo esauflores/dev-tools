@@ -5,7 +5,7 @@ ARG TOOLS_DIR=/tools
 
 RUN apt-get update \
     && apt-get -y --no-install-recommends install \
-    curl git ca-certificates build-essential \
+    zstd curl git ca-certificates build-essential \
     && rm -rf /var/lib/apt/lists/*
 
 # Mise environment variables
