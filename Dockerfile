@@ -23,6 +23,7 @@ RUN curl https://mise.run | sh
 COPY mise.toml ${TOOLS_DIR}/config/mise.toml
 
 RUN sh -c "\
-    rm -rf ${TOOLS_DIR}/shims ${TOOLS_DIR}/installs && \
-    mise install \
+    rm -rf ${TOOLS_DIR}/shims ${TOOLS_DIR}/installs \
+    && mise install \
+    && chmod 755 ${TOOLS_DIR}/shims/* \
     "
