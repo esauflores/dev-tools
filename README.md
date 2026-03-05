@@ -42,10 +42,10 @@ services:
       - dev-tools:/tools:ro
 ```
 
-Add `/tools/shims` to `PATH` in your container's Dockerfile:
+Add `/tools/shims` and `/tools/bin` to `PATH` in your container's Dockerfile:
 
 ```dockerfile
-ENV PATH="/tools/shims:${PATH}"
+ENV PATH="/tools/shims:/tools/bin:${PATH}"
 ```
 
 All dev-tools are now available in your container.
