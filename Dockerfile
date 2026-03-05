@@ -8,6 +8,8 @@ RUN apt-get update \
     zstd curl git ca-certificates build-essential \
     && rm -rf /var/lib/apt/lists/*
 
+RUN mkdir -p ${TOOLS_DIR}/bin ${TOOLS_DIR}/config
+
 # Mise environment variables
 ENV TOOLS_DIR="${TOOLS_DIR}"
 ENV MISE_DATA_DIR="${TOOLS_DIR}"
