@@ -13,7 +13,8 @@ build:
 
 # Tests inside the docker image
 test:
-  docker run --rm {{IMAGE}}:{{VERSION}} sh -c "\
+  docker build -t {{IMAGE}}:test .
+  docker run --rm {{IMAGE}}:test sh -c "\
     mise --version \
     && python --version \
     && node --version"
