@@ -19,12 +19,10 @@ jobs:
           echo "$HOME/.local/share/mise/shims" >> $GITHUB_PATH
 
       - name: Install tools via mise
-        run: |
-          mise install
+        run: mise install
 
-      - name: Setup
-        run: |
-          just setup
+      - name: Setup environment
+        run: just setup
 
       - name: Run tests
         run: just test
