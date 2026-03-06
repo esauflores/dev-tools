@@ -22,7 +22,7 @@ ENV MISE_VERSION=${MISE_VERSION}
 
 RUN curl https://mise.run | sh
 
-COPY mise.toml ${TOOLS_DIR}/config/mise.toml
+COPY tools-config/mise.toml ${TOOLS_DIR}/config/mise.toml
 
 RUN sh -c "\
     rm -rf ${TOOLS_DIR}/shims ${TOOLS_DIR}/installs \

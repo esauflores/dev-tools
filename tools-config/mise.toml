@@ -1,0 +1,26 @@
+[tools]
+# programming tools
+duckdb = "1"
+node = "24"
+python = "3.11.14"
+go = "1.26"
+uv = "latest"
+
+# secret tools
+sops = "latest"
+age = "latest"
+
+# infra tools
+mc = "latest"
+supabase = "2"
+
+# dev tools
+bat = "latest"
+eza = "latest"
+ripgrep = "latest"
+fzf = "latest"
+jq = "latest"
+yq = "latest"
+just = "latest"
+gh = "latest"
+starship = "latest"
