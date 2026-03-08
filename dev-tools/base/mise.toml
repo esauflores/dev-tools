@@ -1,0 +1,26 @@
+[tools]
+
+### Runtimes ###
+node   = "24"
+go     = "1.26"
+uv     = "latest"
+
+### Infrastructure ###
+kubectl   = "latest"
+terraform = "latest"
+docker-cli = "latest"
+# ansible - controlled via uv
+
+### Secrets ###
+sops = "latest"
+age  = "latest"
+
+### CLI ###
+just    = "latest"
+gh      = "latest"
+jq      = "latest"
+yq      = "latest"
+bat     = "latest"
+ripgrep = "latest"
+fzf     = "latest"
+direnv  = "latest"

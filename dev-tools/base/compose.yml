@@ -1,0 +1,14 @@
+services:
+  dev-tools:
+    # run `just build dev-tools base` first
+    image: dev-tools:base
+    restart: no
+    environment:
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      - MISE_DATA_DIR=/tools
+      - MISE_CONFIG_DIR=/tools/config
+    volumes:
+      - dev-tools-data:/tools
+
+volumes:
+  dev-tools-data:
