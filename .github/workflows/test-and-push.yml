@@ -1,0 +1,60 @@
+name: Test and Push To Registry
+
+on:
+  pull_request:
+  push:
+    tags: ["v*"]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - tools: dev-tools
+            variant: base
+
+    steps:
+      - uses: actions/checkout@v6
+      - uses: jdx/mise-action@v3
+
+      - name: Test
+        run: just test ${{ matrix.tools }} ${{ matrix.variant }}
+
+      - name: Cleanup
+        if: always()
+        run: just down-all ${{ matrix.tools }} ${{ matrix.variant }}
+
+  publish:
+    needs: test
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - tools: dev-tools
+            variant: base
+
+    steps:
+      - uses: actions/checkout@v6
+      - uses: jdx/mise-action@v3
+
+      - name: Login to registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ secrets.REGISTRY_URL }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+
+      - name: Push
+        env:
+          REGISTRY_URL: ${{ secrets.REGISTRY_URL }}
+        run: just push ${{ matrix.tools }} ${{ matrix.variant }}
+
+      - name: Cleanup
+        if: always()
+        run: just down-all ${{ matrix.tools }} ${{ matrix.variant }}
