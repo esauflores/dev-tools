@@ -6,20 +6,27 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 COPY --from=ghcr.io/jdx/mise:2026.3.5 /usr/local/bin/mise /tools/bin/mise
 
-# Always needed env vars for mise
+RUN mkdir -p /tools/config /tools/bin /tools/shims \
+  /tools/mise /tools/uv
+
+### Global tools path ###
 ENV PATH="/tools/bin:/tools/shims:${PATH}"
-ENV MISE_DATA_DIR="/tools"
-ENV MISE_CONFIG_DIR="/tools/config"
 
-# Installation and cache paths
-ENV MISE_CACHE_DIR="/tools/.cache"
+### MISE env vars ###
+ENV MISE_DATA_DIR="/tools/mise"
+ENV MISE_CACHE_DIR="/tools/.cache/mise"
 ENV MISE_INSTALL_PATH="/tools/bin/mise"
+# Always needed env vars for mise
+ENV MISE_CONFIG_DIR="/tools/config"
+ENV MISE_SHIMS_DIR="/tools/shims"
 
-# UV environment variables
-ENV UV_TOOL_BIN_DIR=/tools/bin
-ENV UV_PYTHON=3.11
+### UV env vars ###
+ENV UV_TOOL_DIR="/tools/uv"
+ENV UV_TOOL_BIN_DIR="/tools/bin"
+ENV UV_CACHE_DIR="/tools/.cache/uv"
+ENV UV_PYTHON="3.11"
 
-COPY mise.toml /tools/config/mise.toml
+COPY config/ /tools/config/
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh

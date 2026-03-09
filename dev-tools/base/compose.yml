@@ -5,8 +5,9 @@ services:
     restart: no
     environment:
       - GITHUB_TOKEN=${GITHUB_TOKEN}
-      - MISE_DATA_DIR=/tools
-      - MISE_CONFIG_DIR=/tools/config
+      # MISE environment variables
+      # - MISE_DATA_DIR=/tools/mise
+      # - MISE_CONFIG_DIR=/tools/config
     volumes:
       - dev-tools-data:/tools
 

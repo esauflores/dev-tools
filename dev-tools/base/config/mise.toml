@@ -3,6 +3,7 @@
 ### Runtimes ###
 node   = "24"
 go     = "1.26"
+python = "3.11"
 uv     = "latest"
 
 ### Infrastructure ###
