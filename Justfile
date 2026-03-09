@@ -73,13 +73,17 @@ test service=SERVICE variant=VARIANT:
   just up {{service}} {{variant}}
   trap "just down {{service}} {{variant}}" EXIT
   case "{{service}}:{{variant}}" in
-    dev:base)  just _test-dev base ;;
+    dev-tools:base)  just _test-dev base ;;
     *)         echo "Unknown service: {{service}} {{variant}}" >&2; exit 1 ;;
   esac
 
 _test-dev variant=VARIANT:
   #!/usr/bin/env bash
-  docker compose -f dev/{{variant}}/compose.yml exec bash -c "
+  docker compose -f dev-tools/{{variant}}/compose.yml exec dev-tools bash -c "
     mise --version
     mise ls
+    go version
+    python --version
+    node --version
+    ansible --version
   "
