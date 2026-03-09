@@ -1,0 +1,14 @@
+services:
+  dev-tools:
+    image: git.fastwaydata.com/esauflores/dev-tools:base
+    restart: no
+    environment:
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      # MISE environment variables
+      # - MISE_DATA_DIR=/tools/mise
+      # - MISE_CONFIG_DIR=/tools/config
+    volumes:
+      - dev-tools-data:/tools
+
+volumes:
+  dev-tools-data:
